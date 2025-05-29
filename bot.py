@@ -14,9 +14,7 @@ def main_menu(chat_id):
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.row("🎥 Смотреть видео")
     markup.row("📞 Связаться с нами", "🌐 Наш сайт", "👥 ЭТО ЛЮДИ")
-    bot.send_message(chat_id, 'Первые шаги на пути к свободному танцу от директора школы ЭТО Александра Могилева. Смотри видео!', reply_markup=markup)
-
-
+    bot.send_message(chat_id, "Первые шаги на пути к свободному танцу от директора школы ЭТО Александра Могилева. Жми на кнопку \"Смотреть видео\"", reply_markup=markup)
 
 @bot.message_handler(commands=["start"])
 def handle_start(message):
@@ -24,29 +22,16 @@ def handle_start(message):
 
 @bot.message_handler(func=lambda message: message.text == "🎥 Смотреть видео")
 def handle_video(message):
-    chat_id = message.chat.id
-    send_video_sequence(chat_id)
-
-@bot.message_handler(func=lambda message: message.text == "📞 Связаться с нами")
-def handle_contact(message):
-    bot.send_message(message.chat.id, "Связь: @eto_dance_school")
-
-@bot.message_handler(func=lambda message: message.text == "🌐 Наш сайт")
-def handle_website(message):
-    bot.send_message(message.chat.id, "Вот наш сайт: https://etodance.com")
-
-@bot.message_handler(func=lambda message: message.text == "👥 ЭТО ЛЮДИ")
-def handle_people(message):
-    bot.send_message(message.chat.id, "Начни танцевать: https://etodance.com/people")
+    send_video_sequence(message.chat.id)
 
 def send_video_sequence(chat_id):
     if os.path.exists(video_path):
-        with open(video_path, 'rb') as video:
+        with open(video_path, "rb") as video:
             bot.send_video(chat_id, video)
-        time.sleep(5)
-        bot.send_message(chat_id, "Если хочешь задать вопрос — напиши нам!")
     else:
-        bot.send_message(chat_id, "Видео пока не загружено. Пожалуйста, добавьте файл video.mp4 в папку проекта.")
+        bot.send_message(chat_id, "Видео пока не загружено. Пожалуйста, добавьте файл video.mp4 в папку static.")
+    time.sleep(180)
+    bot.send_message(chat_id, "Приходи на пробное занятие ЭТО ЛЮДИ! Жми на кнопку в меню.")
 
 @app.route("/", methods=["POST"])
 def webhook():
