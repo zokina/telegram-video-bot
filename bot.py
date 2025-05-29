@@ -1,6 +1,6 @@
-
 import os
 import telebot
+from telebot import types
 from flask import Flask, request
 import time
 
@@ -11,10 +11,10 @@ app = Flask(__name__)
 video_path = "video.mp4"
 
 def main_menu(chat_id):
-    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.row("🎥 Смотреть видео")
-    markup.row("📞 Связаться с нами", "🌐 Наш сайт", "👥 ЭТО ЛЮДИ")
-    bot.send_message(chat_id, "Первые шаги на пути к свободному танцу от директора школы ЭТО Александра Могилева. Жми на кнопку \"Смотреть видео\"", reply_markup=markup)
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.row("🎥 Смотреть видео", "👥 ЭТО ЛЮДИ")
+    markup.row("📞 Связаться с нами", "🌐 Наш сайт")
+    bot.send_message(chat_id, 'Первые шаги на пути к свободному танцу от директора школы ЭТО Александра Могилева. Смотри видео!', reply_markup=markup)
 
 @bot.message_handler(commands=["start"])
 def handle_start(message):
@@ -22,16 +22,25 @@ def handle_start(message):
 
 @bot.message_handler(func=lambda message: message.text == "🎥 Смотреть видео")
 def handle_video(message):
-    send_video_sequence(message.chat.id)
+    chat_id = message.chat.id
+    send_video_sequence(chat_id)
+    time.sleep(180)
+
+    markup = types.InlineKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton("🌐 Наш сайт", url="https://etodance.com"))
+    markup.add(types.InlineKeyboardButton("👥 ЭТО ЛЮДИ", url="https://etodance.com/etofirst"))
+    markup.add(types.InlineKeyboardButton("📞 Связаться с нами", url="https://t.me/eto_dance_school"))
+
+    bot.send_message(chat_id, "Выбери действие:", reply_markup=markup)
 
 def send_video_sequence(chat_id):
     if os.path.exists(video_path):
-        with open(video_path, "rb") as video:
+        with open(video_path, 'rb') as video:
             bot.send_video(chat_id, video)
+        time.sleep(5)
+        bot.send_message(chat_id, "Приходи на пробное занятие, жми кнопку ЭТО ЛЮДИ!")
     else:
-        bot.send_message(chat_id, "Видео пока не загружено. Пожалуйста, добавьте файл video.mp4 в папку static.")
-    time.sleep(180)
-    bot.send_message(chat_id, "Приходи на пробное занятие ЭТО ЛЮДИ! Жми на кнопку в меню.")
+        bot.send_message(chat_id, "Видео пока не загружено. Пожалуйста, добавьте файл video.mp4 в папку проекта.")
 
 @app.route("/", methods=["POST"])
 def webhook():
