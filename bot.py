@@ -2,6 +2,7 @@ from telebot import types
 import os
 import telebot
 from flask import Flask, request
+import time
 import threading
 
 TOKEN = os.getenv("BOT_TOKEN")
@@ -25,12 +26,26 @@ def handle_video(message):
     send_video_sequence(chat_id)
     threading.Timer(120, send_followup_links, args=(chat_id,)).start()
 
+@bot.message_handler(content_types=['video'])
+def get_video_id(message):
+    bot.send_message(message.chat.id, f"file_id: `{message.video.file_id}`", parse_mode='Markdown')
+
+
 def send_video_sequence(chat_id):
     if os.path.exists(video_path):
         with open(video_path, 'rb') as video:
-            bot.send_video(chat_id, video, supports_streaming=True)
+            bot.send_video(
+                chat_id,
+                video,
+                supports_streaming=True,
+                width=720,
+                height=1280,
+                duration=183
+            )
+        time.sleep(5)
     else:
         bot.send_message(chat_id, "Видео пока не загружено. Пожалуйста, добавьте файл video.mp4 в папку проекта.")
+
 
 def send_followup_links(chat_id):
     markup = types.InlineKeyboardMarkup()
