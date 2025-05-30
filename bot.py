@@ -65,5 +65,6 @@ def index():
 
 if __name__ == "__main__":
     bot.remove_webhook()
-    threading.Timer(5, lambda: bot.set_webhook(url=os.getenv("WEBHOOK_URL"))).start()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+time.sleep(1)  # небольшая пауза
+bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
+app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
