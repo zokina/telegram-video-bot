@@ -23,14 +23,12 @@ def handle_start(message):
 def handle_video(message):
     chat_id = message.chat.id
     send_video_sequence(chat_id)
-
-    # Отложенное сообщение через 120 секунд
     threading.Timer(120, send_followup_links, args=(chat_id,)).start()
 
 def send_video_sequence(chat_id):
     if os.path.exists(video_path):
         with open(video_path, 'rb') as video:
-            bot.send_video(chat_id, video)
+            bot.send_video(chat_id, video, supports_streaming=True)
     else:
         bot.send_message(chat_id, "Видео пока не загружено. Пожалуйста, добавьте файл video.mp4 в папку проекта.")
 
