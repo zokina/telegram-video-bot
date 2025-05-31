@@ -16,7 +16,7 @@ def main_menu(chat_id):
     markup.row("🎥 Смотреть видео")
     bot.send_message(
         chat_id,
-        "Первые шаги на пути к свободному танцу от хореографа проекта «Танцы на ТНТ» известного танцовщика Александра Могилёва. Смотри видео!",
+        "Твои первые шаги на пути к свободному танцу от хореографа проекта «Танцы на ТНТ» известного танцовщика Александра Могилёва. Смотри видео ⬇️",
         reply_markup=markup
     )
 
@@ -46,10 +46,11 @@ def send_video_sequence(chat_id):
 
 def send_followup_links(chat_id):
     markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton("👥 ЭТО ЛЮДИ", url="https://etodance.com/etofirst"))
-    markup.add(types.InlineKeyboardButton("🌐 Наш сайт", url="https://etodance.com"))
+    markup.add(types.InlineKeyboardButton("👥 Это люди - оплатить за 999 руб", url="https://etodance.com/payment"))
+    markup.add(types.InlineKeyboardButton("🌐 Наш сайт", url="https://etodance.com/etofirst"))
     markup.add(types.InlineKeyboardButton("📞 Связаться", url="https://t.me/eto_dance_school"))
-    bot.send_message(chat_id, "Приходи на пробное занятие ЭТО ЛЮДИ! Жми на кнопку в меню.", reply_markup=markup)
+    markup.add(types.InlineKeyboardButton("❤️ Другие направления школы", url="https://etodance.com/"))
+    bot.send_message(chat_id, "Понравилось видео? Тогда прииходи на пробное занятие «ЭТО ЛЮДИ» и начни танцевать свободно вместе с нами. Жми на кнопку в меню ⬇️", reply_markup=markup)
 
 # 📹 Обработчик видео, отправленного как видео
 @bot.message_handler(content_types=['video'])
@@ -85,3 +86,5 @@ if __name__ == "__main__":
     time.sleep(1)
     bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    # фиктивное изменение для перезапуска
+
