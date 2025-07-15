@@ -72,6 +72,102 @@ def get_video_as_document(message):
             parse_mode='Markdown'
         )
 
+# события после
+# Добавляем таймеры для уведомлений
+
+
+
+def schedule_notifications(chat_id):
+
+
+    # Уведомление через неделю
+
+
+    one_week_later = datetime.datetime.now() + datetime.timedelta(weeks=1)
+
+
+    threading.Timer((one_week_later - datetime.datetime.now()).total_seconds(), send_weekly_notification, args=(chat_id,)).start()
+
+
+
+
+
+    # Уведомление через две недели
+
+
+    two_weeks_later = datetime.datetime.now() + datetime.timedelta(weeks=2)
+
+
+    threading.Timer((two_weeks_later - datetime.datetime.now()).total_seconds(), send_two_week_notification, args=(chat_id,)).start()
+
+
+
+
+
+    # Уведомление через месяц
+
+
+    one_month_later = datetime.datetime.now() + datetime.timedelta(weeks=4)
+
+
+    threading.Timer((one_month_later - datetime.datetime.now()).total_seconds(), send_monthly_notification, args=(chat_id,)).start()
+
+
+
+
+
+def send_weekly_notification(chat_id):
+
+
+    bot.send_message(
+
+
+        chat_id,
+
+
+        "Мечтаете избавиться от стресса и тревоги? Танец поможет Вам расслабиться и почувствовать себя лучше. Без конкуренции, критики и стеснения. С поддержкой сильнейших педагогов страны! Запишитесь на пробное занятие всего за 499 рублей."
+
+
+    )
+
+
+
+
+
+def send_two_week_notification(chat_id):
+
+
+    bot.send_message(
+
+
+        chat_id,
+
+
+        "Страдаете от нехватки энергии и мотивации? Проведите время в дружелюбной атмосфере школы танцев А.Могилева без конкуренции и осуждения. Пусть движение станет Вашим источником силы — бронируйте пробное за 499 рублей и начните менять жизнь в лучшую сторону. Количество мест ограничено!"
+
+
+    )
+
+
+
+
+
+def send_monthly_notification(chat_id):
+
+
+    bot.send_message(
+
+
+        chat_id,
+
+
+        "Сделайте первый шаг к лучшей жизни! С помощью танца и сильнейших педагогов страны, Вы легко и просто зарядитесь энергией и позитивом, избавитесь от скованности и зажатости. Вы увидите результат и почувствуете уверенность в себе уже после 1 занятия. Запишитесь на пробное за 499 рублей и почувствуйте, как оживает Ваше тело и душа."
+
+
+    )
+
+# конец блока событий после
+
 @app.route("/", methods=["POST"])
 def webhook():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
