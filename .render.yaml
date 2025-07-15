@@ -1,0 +1,11 @@
+
+services:
+  - type: web
+    name: telegram-video-bot
+    env: python
+    plan: free
+    build:
+      commands:
+        - pip install -r requirements.txt
+    start:
+      command: python bot.py

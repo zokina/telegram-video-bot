@@ -7,7 +7,7 @@ import threading
 import datetime
 
 # Токен бота
-TOKEN = "8193200259:AAFanSNesmdce0ISr6CtHgOiwrmay6SgPVw"
+TOKEN = "7765600917:AAEO-ZiHWRaqBdJYRz5Tr7bwrHM9JsQESkI"
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
@@ -31,7 +31,6 @@ def handle_video(message):
     chat_id = message.chat.id
     send_video_sequence(chat_id)
     threading.Timer(120, send_followup_links, args=(chat_id,)).start()
-    schedule_notifications(chat_id)  # Добавляем планирование уведомлений
 
 def send_video_sequence(chat_id):
     if os.path.exists(video_path):
@@ -119,7 +118,7 @@ def index():
 if __name__ == "__main__":
     bot.remove_webhook()
     time.sleep(1)
-    # Используем твой WEBHOOK_URL
-    bot.set_webhook(url="https://telegram-video-bot-1lek.onrender.com")
+    # Настроим вебхук с правильным URL
+    bot.set_webhook(url="https://telegram-video-bot-1lek.onrender.com/webhook")
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
     # фиктивное изменение для перезапуска
